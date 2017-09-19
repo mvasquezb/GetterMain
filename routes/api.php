@@ -26,3 +26,4 @@ Route::resource('stores', 'StoreController');
 // Route::resource('offer-types', 'OfferTypeController');
 Route::resource('products', 'ProductController');
 Route::resource('offers', 'OfferController');
+Route::resource('users.purchases', 'PurchaseController');

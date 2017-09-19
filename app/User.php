@@ -24,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'pivot'
     ];
 
     /**
@@ -41,5 +41,14 @@ class User extends Authenticatable
     public function stores()
     {
         return $this->belongsToMany('App\Store');
+    }
+
+    /**
+     * The offers this user has bought
+     */
+    public function purchases()
+    {
+        return $this->belongsToMany('App\Offer', 'purchases')
+                    ->withPivot('purchase_date');
     }
 }
