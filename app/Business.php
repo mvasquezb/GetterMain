@@ -10,4 +10,9 @@ class Business extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function stores()
+    {
+        return $this->hasMany('App\Store');
+    }
 }

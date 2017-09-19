@@ -19,4 +19,6 @@ use App\User;
 // });
 
 Route::resource('users', 'UserController');
+Route::resource('businesses.stores', 'BusinessStoreController');
 Route::resource('businesses', 'BusinessController');
+Route::resource('stores', 'StoreController');

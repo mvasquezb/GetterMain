@@ -27,8 +27,19 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * The businesses this user owns
+     */
     public function businesses()
     {
         return $this->hasMany('App\Business');
+    }
+
+    /**
+     * The stores this user has access to
+     */
+    public function stores()
+    {
+        return $this->belongsToMany('App\Store');
     }
 }
