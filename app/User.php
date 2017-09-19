@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'age', 'gender',
     ];
 
     /**
@@ -24,6 +24,31 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'pivot'
     ];
+
+    /**
+     * The businesses this user owns
+     */
+    public function businesses()
+    {
+        return $this->hasMany('App\Business');
+    }
+
+    /**
+     * The stores this user has access to
+     */
+    public function stores()
+    {
+        return $this->belongsToMany('App\Store');
+    }
+
+    /**
+     * The offers this user has bought
+     */
+    public function purchases()
+    {
+        return $this->belongsToMany('App\Offer', 'purchases')
+                    ->withPivot('purchase_date');
+    }
 }
