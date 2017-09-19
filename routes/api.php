@@ -19,3 +19,4 @@ use App\User;
 // });
 
 Route::resource('users', 'UserController');
+Route::resource('businesses', 'BusinessController');
