@@ -15,4 +15,9 @@ class Business extends Model
     {
         return $this->hasMany('App\Store');
     }
+    
+    public function products()
+    {
+        return $this->hasMany('App\Product');
+    }
 }

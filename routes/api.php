@@ -22,3 +22,5 @@ Route::resource('users', 'UserController');
 Route::resource('businesses.stores', 'BusinessStoreController');
 Route::resource('businesses', 'BusinessController');
 Route::resource('stores', 'StoreController');
+// Route::resource('product-categories', 'ProductCategoryController');
+Route::resource('products', 'ProductController');
