@@ -25,3 +25,4 @@ Route::resource('stores', 'StoreController');
 // Route::resource('product-categories', 'ProductCategoryController');
 // Route::resource('offer-types', 'OfferTypeController');
 Route::resource('products', 'ProductController');
+Route::resource('offers', 'OfferController');

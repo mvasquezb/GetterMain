@@ -19,4 +19,9 @@ class Product extends Model
     {
         return $this->belongsTo('App\Business');
     }
+
+    public function offers()
+    {
+        return $this->hasMany('App\Offer');
+    }
 }

@@ -9,4 +9,9 @@ class OfferType extends Model
     protected $fillable = [
         'name', 'slug'
     ];
+
+    public function offers()
+    {
+        return $this->hasMany('App\Offer');
+    }
 }
