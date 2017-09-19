@@ -15,12 +15,16 @@ use Faker\Generator as Faker;
 
 $factory->define(App\User::class, function (Faker $faker) {
     static $password;
-
+    $genders = ['male', 'female'];
+    $gender = $genders[array_rand($genders)];
+    
     return [
-        'name' => $faker->name,
+        'name' => $faker->name($gender),
         'email' => $faker->unique()->safeEmail,
         'firebase_uid' => str_random(28),
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
+        'age' => random_int(18, 70),
+        'gender' => $gender,
     ];
 });

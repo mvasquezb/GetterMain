@@ -18,5 +18,4 @@ use App\User;
 //     return $request->user();
 // });
 
-Route::resource('users', 'UserController'); 
-Route::resource('person', 'PersonController');
+Route::resource('users', 'UserController');
