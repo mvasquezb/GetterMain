@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\ProductCategory;
 use Illuminate\Support\ServiceProvider;
+use App\Observers\ProductCategoryObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
