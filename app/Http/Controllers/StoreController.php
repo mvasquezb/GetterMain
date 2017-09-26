@@ -12,9 +12,16 @@ class StoreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Store::all();
+        $stores = Store::all();
+        $withBusinessInfo = $request->input('business_info', false) ?: false;
+        if ($withBusinessInfo) {
+            foreach($stores as $store) {
+                $store->append(['business_name', 'business_logo_url']);
+            }
+        }
+        return $stores;
     }
 
     /**
@@ -44,8 +51,12 @@ class StoreController extends Controller
      * @param  \App\Store  $store
      * @return \Illuminate\Http\Response
      */
-    public function show(Store $store)
+    public function show(Request $request, Store $store)
     {
+        $withBusinessInfo = $request->input('business_info', false) ?: false;
+        if ($withBusinessInfo) {
+            $store->append(['business_name', 'business_logo_url']);
+        }
         return $store;
     }
 
