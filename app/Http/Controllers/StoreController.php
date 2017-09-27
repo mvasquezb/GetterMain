@@ -80,7 +80,18 @@ class StoreController extends Controller
      */
     public function update(Request $request, Store $store)
     {
-        //
+        $latitude = $request->input('latitude', $store->latitude);
+        $longitude = $request->input('longitude', $store->longitude);
+        
+        $store->latitude = $latitude;
+        $store->longitude = $longitude;
+        $store->save();
+
+        return response()->json([
+            'code' => 0,
+            'message' => 'Store updated successfully',
+            'data' => $store,
+        ]);
     }
 
     /**

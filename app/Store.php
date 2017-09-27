@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Store extends Model
 {
+
+    protected $fillable = [
+        'latitude', 'longitude',
+    ];
+
     protected $hidden = ['business'];
 
     public function getBusinessNameAttribute() {
