@@ -2,31 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Store;
+use App\Offer;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class StoreOffersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, Store $store)
     {
-        return User::all();
+        
+        return $store->offers;
     }
- 
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request, Store $store)
     {
         //
     }
- 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -37,54 +39,54 @@ class UserController extends Controller
     {
         //
     }
- 
+
     /**
      * Display the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\Offer  $offer
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Request $request, Store $store, Offer $offer)
     {
-        return $user;
+        return $offer;
     }
- 
+
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\Offer  $offer
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
-    {
-        //
-    }
- 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
-    {
-        //
-    }
- 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
+    public function edit(Request $request, Store $store, Offer $offer)
     {
         //
     }
 
-    public function count()
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Store $store, Offer $offer)
     {
-        return User::count();
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Offer $offer
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, Store $store, Offer $offer)
+    {
+        //
+    }
+
+    public function count(Request $request, Store $store)
+    {
+        return $store->offers()->count();
     }
 }
