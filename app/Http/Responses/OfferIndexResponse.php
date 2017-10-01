@@ -14,7 +14,9 @@ class OfferIndexResponse implements Responsable
 
     public function toResponse($request)
     {
-        if ($request->input('product_info')) {
+        $productInfo = $request->input('product_info', false);
+        $productInfo = $productInfo === "true";
+        if ($productInfo) {
             foreach ($this->offers as $offer) {
                 $offer->append(['product_name', 'product_image_url']);
             }

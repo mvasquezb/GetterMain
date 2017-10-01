@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Offer;
 use Illuminate\Http\Request;
+use App\Http\Responses\OfferShowResponse;
+use App\Http\Responses\OfferIndexResponse;
 
 class OfferController extends Controller
 {
@@ -12,9 +14,10 @@ class OfferController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Offer::all();
+        $offers = Offer::all();
+        return new OfferIndexResponse($offers);
     }
 
     /**
@@ -46,7 +49,7 @@ class OfferController extends Controller
      */
     public function show(Offer $offer)
     {
-        return $offer;
+        return new OfferShowResponse($offer);
     }
 
     /**

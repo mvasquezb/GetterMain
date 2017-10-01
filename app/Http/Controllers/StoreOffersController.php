@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Store;
 use App\Offer;
 use Illuminate\Http\Request;
+use App\Http\Responses\OfferShowResponse;
+use App\Http\Responses\OfferIndexResponse;
 
 class StoreOffersController extends Controller
 {
@@ -15,7 +17,7 @@ class StoreOffersController extends Controller
      */
     public function index(Request $request, Store $store)
     {
-        return $store->offers;
+        return new OfferIndexResponse($store->offers);
     }
 
     /**
@@ -47,7 +49,7 @@ class StoreOffersController extends Controller
      */
     public function show(Request $request, Store $store, Offer $offer)
     {
-        return $offer;
+        return new OfferShowResponse($offer);
     }
 
     /**
