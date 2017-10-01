@@ -69,7 +69,20 @@ class BusinessController extends Controller
      */
     public function update(Request $request, Business $business)
     {
-        //
+        $name = $request->input('name', $business->name);
+        $logo = $request->input('logo', $business->logo);
+        $ownerId = $request->input('owner_id', $business->owner_id);
+
+        $business->name = $name;
+        $business->logo = $logo;
+        $business->owner_id = $ownerId;
+        $business->save();
+
+        return response()->json([
+            'code' => 0,
+            'message' => 'Business updated succesfully',
+            'data' => $business
+        ]);
     }
 
     /**

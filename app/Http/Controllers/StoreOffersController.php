@@ -15,7 +15,6 @@ class StoreOffersController extends Controller
      */
     public function index(Request $request, Store $store)
     {
-        
         return $store->offers;
     }
 
