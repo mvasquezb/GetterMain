@@ -72,7 +72,22 @@ class OfferController extends Controller
      */
     public function update(Request $request, Offer $offer)
     {
-        //
+        $startDate = $request->input('start_date', $offer->start_date);
+        $endDate = $request->input('end_date', $offer->end_date);
+        $description = $request->input('description', $offer->description);
+        $offerType = $request->input('offer_type_id', $offer->type->id);
+
+        $offer->start_date = $startDate;
+        $offer->end_date = $endDate;
+        $offer->description = $description;
+        $offer->offer_type_id = $offerType;
+        $offer->save();
+
+        return response()->json([
+            "code" => 0,
+            "message" => "Offer updated successfully",
+            "data" => $offer,
+        ]);
     }
 
     /**
