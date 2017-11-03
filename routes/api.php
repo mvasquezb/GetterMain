@@ -25,7 +25,7 @@ Route::resource('businesses', 'BusinessController');
 Route::get('stores/{store}/offers/count', 'StoreOffersController@count');
 Route::resource('stores.offers', 'StoreOffersController');
 Route::resource('stores', 'StoreController');
-// Route::resource('product-categories', 'ProductCategoryController');
+Route::resource('product-categories', 'ProductCategoryController');
 // Route::resource('offer-types', 'OfferTypeController');
 Route::resource('products', 'ProductController');
 Route::resource('offers', 'OfferController');
