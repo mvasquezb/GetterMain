@@ -122,7 +122,7 @@ class StoreController extends Controller
 		/*tiendas*/
 		$array['data']['stores']=null;		
 		
-		$stores = Store::select('stores.id as store_id','longitude','latitude','business_id','name','logo')->whereHas('business',function($query) use ($string){
+		$stores = Store::select('stores.id as id','longitude','latitude','business_id','name as business_name','logo as business_logo_url')->whereHas('business',function($query) use ($string){
 			$query->whereRaw('LOWER(name) LIKE ?',[$string]);
 		})->join('businesses','businesses.id','stores.business_id')->get();
 		
@@ -131,7 +131,7 @@ class StoreController extends Controller
 		/*ofertas*/
 		$array['data']['offers']=null;
 		
-		$offers = Offer::select('offers.id as offer_id','offers.description','offers.price','image_url as photo')->whereRaw('LOWER(offers.description) LIKE ?',[$string])->join('products','products.id','offers.product_id')->get();
+		$offers = Offer::select('offers.id as id','offers.description','offers.price','image_url as product_image_url')->whereRaw('LOWER(offers.description) LIKE ?',[$string])->join('products','products.id','offers.product_id')->get();
 		
 		$array['data']['offers']=$offers;
 		
