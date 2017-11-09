@@ -127,7 +127,7 @@ class StoreController extends Controller
         if ($filterPrices) {
             $prices = $this->cleanPriceFilters($filterPrices);
             foreach ($prices as $price) {
-                $query = $query->where('products.price', $price['restriction'], $price['amount']);
+                $query = $query->where('offers.price', $price['restriction'], $price['amount']);
             }
         }
         return $query;
