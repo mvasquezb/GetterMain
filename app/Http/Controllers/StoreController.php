@@ -131,8 +131,12 @@ class StoreController extends Controller
 		/*ofertas*/
 		$array['data']['offers']=null;
 		
-		$offers = Offer::select('offers.id as id','offers.description','offers.price','image_url as product_image_url')->whereRaw('LOWER(offers.description) LIKE ?',[$string])->join('products','products.id','offers.product_id')->get();
-		
+		$offers = Offer::select('offers.id as id','offers.description','offers.price','image_url')->whereRaw('LOWER(offers.description) LIKE ?',[$string])->join('products','products.id','offers.product_id')->get();
+                $offers = $offers->toArray();
+                foreach($offers as $index => $offer) {
+                    $offers[$index]['product_image_url'] = $offer['image_url'];
+                    unset($offers[$index]['image_url']);
+                }
 		$array['data']['offers']=$offers;
 		
 		return $array;
