@@ -7,12 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Offer extends Model
 {
     protected $fillable = [
-        'start_date', 'end_date', 'description',
+        'start_date', 'end_date', 'description', 'offer_type_id'
     ];
 
     protected $hidden = [
-        'pivot'
+        'pivot', 'product'
     ];
+
+    public function getProductImageUrlAttribute() {
+        return $this->product->image_url;
+    }
+
+    public function getProductNameAttribute() {
+        return $this->product->name;
+    }
 
     public function getPurchaseDateAttribute() {
         if (!$this->pivot) {

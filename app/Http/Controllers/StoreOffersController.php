@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Business;
+use App\Store;
+use App\Offer;
 use Illuminate\Http\Request;
+use App\Http\Responses\OfferShowResponse;
+use App\Http\Responses\OfferIndexResponse;
 
-class BusinessController extends Controller
+class StoreOffersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, Store $store)
     {
-        return Business::all();
+        return new OfferIndexResponse($store->offers);
     }
 
     /**
@@ -22,7 +25,7 @@ class BusinessController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request, Store $store)
     {
         //
     }
@@ -41,21 +44,21 @@ class BusinessController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Business  $business
+     * @param  \App\Offer  $offer
      * @return \Illuminate\Http\Response
      */
-    public function show(Business $business)
+    public function show(Request $request, Store $store, Offer $offer)
     {
-        return $business;
+        return new OfferShowResponse($offer);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Business  $business
+     * @param  \App\Offer  $offer
      * @return \Illuminate\Http\Response
      */
-    public function edit(Business $business)
+    public function edit(Request $request, Store $store, Offer $offer)
     {
         //
     }
@@ -64,35 +67,27 @@ class BusinessController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Business  $business
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Business $business)
+    public function update(Request $request, Store $store, Offer $offer)
     {
-        $name = $request->input('name', $business->name);
-        $logo = $request->input('logo', $business->logo);
-        $ownerId = $request->input('owner_id', $business->owner_id);
-
-        $business->name = $name;
-        $business->logo = $logo;
-        $business->owner_id = $ownerId;
-        $business->save();
-
-        return response()->json([
-            'code' => 0,
-            'message' => 'Business updated succesfully',
-            'data' => $business
-        ]);
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Business  $business
+     * @param  \App\Offer $offer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Business $business)
+    public function destroy(Request $request, Store $store, Offer $offer)
     {
         //
+    }
+
+    public function count(Request $request, Store $store)
+    {
+        return $store->offers()->count();
     }
 }

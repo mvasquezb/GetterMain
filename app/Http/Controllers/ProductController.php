@@ -69,7 +69,24 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $name = $request->input('name', $product->name);
+        $price = $request->input('price', $product->price);
+        $description = $request->input('description', $product->description);
+        $imageUrl = $request->input('image_url', $product->image_url);
+        $category = $request->input('category_id', $product->category->id);
+
+        $product->name = $name;
+        $product->price = $price;
+        $product->description = $description;
+        $product->image_url = $imageUrl;
+        $product->category_id = $category;
+        $product->save();
+
+        return response()->json([
+            "code" => 0,
+            "message" => "Product updated successfully",
+            "data" => $product,
+        ]);
     }
 
     /**

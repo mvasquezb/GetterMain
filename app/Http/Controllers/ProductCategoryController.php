@@ -14,7 +14,7 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
-        return ProductCategory::all();
+        return ProductCategory::orderBy('id')->get();
     }
 
     /**

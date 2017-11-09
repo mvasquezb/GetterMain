@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Offer;
 use Illuminate\Http\Request;
+use App\Http\Responses\OfferShowResponse;
+use App\Http\Responses\OfferIndexResponse;
 
 class OfferController extends Controller
 {
@@ -12,9 +14,10 @@ class OfferController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Offer::all();
+        $offers = Offer::all();
+        return new OfferIndexResponse($offers);
     }
 
     /**
@@ -46,7 +49,7 @@ class OfferController extends Controller
      */
     public function show(Offer $offer)
     {
-        return $offer;
+        return new OfferShowResponse($offer);
     }
 
     /**
@@ -69,7 +72,22 @@ class OfferController extends Controller
      */
     public function update(Request $request, Offer $offer)
     {
-        //
+        $startDate = $request->input('start_date', $offer->start_date);
+        $endDate = $request->input('end_date', $offer->end_date);
+        $description = $request->input('description', $offer->description);
+        $offerType = $request->input('offer_type_id', $offer->type->id);
+
+        $offer->start_date = $startDate;
+        $offer->end_date = $endDate;
+        $offer->description = $description;
+        $offer->offer_type_id = $offerType;
+        $offer->save();
+
+        return response()->json([
+            "code" => 0,
+            "message" => "Offer updated successfully",
+            "data" => $offer,
+        ]);
     }
 
     /**
