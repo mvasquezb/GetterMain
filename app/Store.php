@@ -20,4 +20,5 @@ class Store extends Model
     {
         return $this->hasMany('App\Offer');
     }
+	
 }

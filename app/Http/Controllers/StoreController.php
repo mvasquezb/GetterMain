@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Store;
+use App\Offer;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
@@ -82,4 +83,35 @@ class StoreController extends Controller
     {
         //
     }
+	
+	
+	/*Se llama en la busqueda generica de la aplicacion*/
+	public function googling(Request $request){
+	
+		$array = array();
+		$array['status']=0;
+		$array['data']=array();
+	
+		$string='%'.strtolower($request->value).'%';
+		
+		/*se retorna tiendas*/
+		$array['data']['stores']=null;		
+		
+		$stores = Store::select('stores.id as store_id','longitude','latitude','business_id','name','logo')->whereHas('business',function($query) use ($string){
+			$query->whereRaw('LOWER(name) LIKE ?',[$string]);
+		})->join('businesses','businesses.id','stores.business_id')->get();
+		
+		$array['data']['stores']=$stores;
+		
+		/*se retorna ofertas*/
+		$array['data']['offers']=null;
+		
+		$offers = Offer::select('offers.id as offer_id','offers.description','offers.price','image_url as photo')->whereRaw('LOWER(offers.description) LIKE ?',[$string])->join('products','products.id','offers.product_id')->get();
+		
+		$array['data']['offers']=$offers;
+		
+		return $array;
+		
+	}	
+	
 }
