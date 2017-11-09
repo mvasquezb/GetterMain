@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Store;
 use App\Offer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StoreController extends Controller
 {
@@ -13,9 +14,18 @@ class StoreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Store::all();
+        $stores = $this->filterStores($request);
+        $stores = $stores->get();
+        
+        $withBusinessInfo = $request->input('business_info', false) ?: false;
+        if ($withBusinessInfo) {
+            foreach ($stores as $store) {
+                $store->append(['business_name', 'business_logo_url']);
+            }
+        }
+        return $stores;
     }
 
     /**
@@ -45,8 +55,12 @@ class StoreController extends Controller
      * @param  \App\Store  $store
      * @return \Illuminate\Http\Response
      */
-    public function show(Store $store)
+    public function show(Request $request, Store $store)
     {
+        $withBusinessInfo = $request->input('business_info', false) ?: false;
+        if ($withBusinessInfo) {
+            $store->append(['business_name', 'business_logo_url']);
+        }
         return $store;
     }
 
@@ -70,7 +84,18 @@ class StoreController extends Controller
      */
     public function update(Request $request, Store $store)
     {
-        //
+        $latitude = $request->input('latitude', $store->latitude);
+        $longitude = $request->input('longitude', $store->longitude);
+        
+        $store->latitude = $latitude;
+        $store->longitude = $longitude;
+        $store->save();
+
+        return response()->json([
+            'code' => 0,
+            'message' => 'Store updated successfully',
+            'data' => $store,
+        ]);
     }
 
     /**
@@ -94,7 +119,7 @@ class StoreController extends Controller
 	
 		$string='%'.strtolower($request->value).'%';
 		
-		/*se retorna tiendas*/
+		/*tiendas*/
 		$array['data']['stores']=null;		
 		
 		$stores = Store::select('stores.id as store_id','longitude','latitude','business_id','name','logo')->whereHas('business',function($query) use ($string){
@@ -103,7 +128,7 @@ class StoreController extends Controller
 		
 		$array['data']['stores']=$stores;
 		
-		/*se retorna ofertas*/
+		/*ofertas*/
 		$array['data']['offers']=null;
 		
 		$offers = Offer::select('offers.id as offer_id','offers.description','offers.price','image_url as photo')->whereRaw('LOWER(offers.description) LIKE ?',[$string])->join('products','products.id','offers.product_id')->get();
@@ -113,5 +138,53 @@ class StoreController extends Controller
 		return $array;
 		
 	}	
-	
+
+    private function filterStores($request)
+    {
+        $filterCategories = $request->category;
+        $filterPrices = $request->price;
+
+        $query = Store::query();
+        if ($filterCategories || $filterPrices) {
+            $query = $query->join('offers', 'offers.store_id', '=', 'stores.id')
+                    ->join('products', 'products.id', '=', 'offers.product_id');
+        }
+
+        if ($filterCategories) {
+            $query = $query->join('product_categories', 'product_categories.id', '=', 'products.category_id')
+                    ->whereIn('product_categories.slug', $filterCategories);
+        }
+        
+        if ($filterPrices) {
+            $prices = $this->cleanPriceFilters($filterPrices);
+            foreach ($prices as $price) {
+                $query = $query->where('offers.price', $price['restriction'], $price['amount']);
+            }
+        }
+        return $query;
+    }
+
+    private function cleanPriceFilters($priceFilters)
+    {
+        $prices = [];
+        foreach ($priceFilters as $filter) {
+            $restriction = substr($filter, 0, 1);
+            $amount = substr($filter, 1);
+            if (!in_array($restriction, ['<', '=', '>'])) {
+                continue;
+            }
+            if (!is_numeric($amount)) {
+                continue;
+            }
+            $amount = floatval($amount);
+            if ($amount <= 0) {
+                continue;
+            }
+            $prices[] = [
+                'restriction' => $restriction,
+                'amount' => $amount,
+            ];
+        }
+        return $prices;
+    }
 }
